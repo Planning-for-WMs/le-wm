@@ -1,0 +1,7 @@
+CLAUDE.md
+cookies.txt
+pyproject.toml
+wandb/
+outputs/
+dataset/
+.python-version
