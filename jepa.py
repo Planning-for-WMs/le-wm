@@ -145,7 +145,7 @@ class JEPA(nn.Module):
         goal.pop("action")
         goal = self.encode(goal)
 
-        info_dict["goal_emb"] = goal["emb"]
+        info_dict["goal_emb"] = goal["emb"].unsqueeze(1)  # (B, 1, T, D) — S dim added for broadcasting
         info_dict = self.rollout(info_dict, action_candidates)
 
         cost = self.criterion(info_dict)

@@ -55,7 +55,7 @@ def run(cfg: DictConfig):
 
     # create world environment
     cfg.world.max_episode_steps = 2 * cfg.eval.eval_budget
-    world = swm.World(**cfg.world, image_shape=(224, 224))
+    world = swm.World(**cfg.world, image_shape=(cfg.eval.img_size, cfg.eval.img_size))
 
     # create the transform
     transform = {

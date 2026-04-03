@@ -5,3 +5,5 @@ wandb/
 outputs/
 dataset/
 .python-version
+__pycache__
+dataset_fast

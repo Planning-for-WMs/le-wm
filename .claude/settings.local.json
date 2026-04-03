@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(source /opt/miniforge3/etc/profile.d/conda.sh)",
+      "Bash(conda activate:*)",
+      "Bash(python -c \"import hdf5plugin; print\\(hdf5plugin.__version__\\)\")"
+    ]
+  }
+}

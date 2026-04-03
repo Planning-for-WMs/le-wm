@@ -1,11 +1,11 @@
 defaults:
   - _self_
-  - data: pusht
+  - data: pusht_112
 
-output_model_name: lewm_bisim
+output_model_name: lewm_rdmreg
 subdir: ${hydra:job.id}
 
-num_workers: 12
+num_workers: 6
 train_split: 0.9
 seed: 3072
 img_size: 112
@@ -21,25 +21,25 @@ trainer:
   gradient_clip_val: 1.0
 
 loader:
-  batch_size: 128
+  batch_size: 512
   num_workers: ${num_workers}
   persistent_workers: True
-  prefetch_factor: 3
-  pin_memory: True
+  prefetch_factor: 2
+  pin_memory: False
 
 optimizer:
   type: AdamW
-  lr: 5e-5
+  lr: 2e-4
   weight_decay: 1e-3
 
 wandb:
-  enabled: False
+  enabled: True
   config:
     entity: wms_at_iitb
     project: le-wm
     name: ${output_model_name}
     id: ${subdir}
-    resume: allow
+    resume: True
     log_model: False
 
 wm:
@@ -49,7 +49,7 @@ wm:
   embed_dim: 192
 
 predictor:
-  depth: 2
+  depth: 6
   heads: 16
   mlp_dim: 2048
   dim_head: 64
@@ -57,11 +57,12 @@ predictor:
   emb_dropout: 0.0
 
 loss:
-  sigreg:
-    weight: 0.09
+  rdmreg:
+    weight: 1.0
     kwargs:
-      knots: 17
-      num_proj: 1024
-  bisim:
-    weight: 1
-    warmup_epochs: 0
+      # p=1.0: Rectified Laplace — best sparsity-performance tradeoff per paper ablations
+      p: 1.0
+      # mu=0.0: balanced sparsity (lower = more sparse)
+      mu: 0.0
+      # num_proj=8192: paper default for sliced Wasserstein approximation
+      num_proj: 8192

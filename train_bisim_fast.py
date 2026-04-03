@@ -83,7 +83,7 @@ def lejepa_bisim_forward(self, batch, stage, cfg):
     return output
 
 
-@hydra.main(version_base=None, config_path="./config/train", config_name="lewm_bisim")
+@hydra.main(version_base=None, config_path="./config/train", config_name="lewm_bisim_fast")
 def run(cfg):
     #########################
     ##       dataset       ##
@@ -160,6 +160,7 @@ def run(cfg):
         projector=projector,
         pred_proj=predictor_proj,
     )
+    world_model = torch.compile(world_model)
 
     optimizers = {
         'model_opt': {

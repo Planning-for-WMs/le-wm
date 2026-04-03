@@ -1,11 +1,11 @@
 defaults:
   - _self_
-  - data: pusht
+  - data: pusht_112
 
 output_model_name: lewm_bisim
 subdir: ${hydra:job.id}
 
-num_workers: 12
+num_workers: 6
 train_split: 0.9
 seed: 3072
 img_size: 112
@@ -14,32 +14,31 @@ encoder_scale: tiny
 dump_object: True
 
 trainer:
-  max_epochs: 100
+  max_epochs: 10
   devices: auto
   accelerator: gpu
   precision: bf16
   gradient_clip_val: 1.0
 
 loader:
-  batch_size: 128
+  batch_size: 512
   num_workers: ${num_workers}
   persistent_workers: True
-  prefetch_factor: 3
-  pin_memory: True
+  prefetch_factor: 2
+  pin_memory: False
 
 optimizer:
   type: AdamW
-  lr: 5e-5
+  lr: 2e-4
   weight_decay: 1e-3
 
 wandb:
-  enabled: False
+  enabled: True
   config:
     entity: wms_at_iitb
     project: le-wm
-    name: ${output_model_name}
+    name: ${output_model_name}_baseline
     id: ${subdir}
-    resume: allow
     log_model: False
 
 wm:
@@ -49,7 +48,7 @@ wm:
   embed_dim: 192
 
 predictor:
-  depth: 2
+  depth: 6
   heads: 16
   mlp_dim: 2048
   dim_head: 64
@@ -63,5 +62,5 @@ loss:
       knots: 17
       num_proj: 1024
   bisim:
-    weight: 1
+    weight: 0
     warmup_epochs: 0

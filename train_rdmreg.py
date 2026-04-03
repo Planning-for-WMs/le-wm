@@ -11,39 +11,17 @@ from lightning.pytorch.loggers import WandbLogger
 from omegaconf import OmegaConf, open_dict
 
 from jepa import JEPA
-from module import ARPredictor, Embedder, MLP, SIGReg
+from module import ARPredictor, Embedder, MLP
+from rdmreg import RDMReg
 from utils import get_column_normalizer, get_img_preprocessor, ModelObjectCallBack
 
 
-def compute_bisim_loss(emb, act_emb):
-    """Bisimulation metric loss: (||E(x_i) - sg(E(x_{i-1}))||_2 - ||sg(a_{i-1})||_2)^2
-
-    Gradients flow through E(x_i) only. Previous state and action embeddings are frozen.
-    """
-    emb_current = emb[:, 1:]              # (B, T-1, D)
-    emb_prev = emb[:, :-1].detach()       # (B, T-1, D), frozen
-    act_prev = act_emb[:, :-1]  # (B, T-1, D_emb), frozen
-
-    emb_dist = (emb_current - emb_prev).norm(p=2, dim=-1)   # (B, T-1)
-    act_norm = act_prev.norm(p=2, dim=-1)                    # (B, T-1)
-
-    return (emb_dist - act_norm).pow(2).mean()
-    # return torch.nn.functional.mse_loss(emb_current, emb_prev + act_prev)
-
-
-def get_effective_bisim_lambda(current_epoch, target_weight, warmup_epochs):
-    """Linear warmup from 0 to target_weight over warmup_epochs."""
-    if warmup_epochs <= 0:
-        return target_weight
-    return target_weight * min(current_epoch / warmup_epochs, 1.0)
-
-
-def lejepa_bisim_forward(self, batch, stage, cfg):
-    """Encode observations, predict next states, compute losses with bisim regularization."""
+def lejepa_rdmreg_forward(self, batch, stage, cfg):
+    """Encode observations, predict next states, compute losses with RDMReg."""
 
     ctx_len = cfg.wm.history_size
     n_preds = cfg.wm.num_preds
-    lambd_sigreg = cfg.loss.sigreg.weight
+    lambd = cfg.loss.rdmreg.weight
 
     # Replace NaN values with 0 (occurs at sequence boundaries)
     batch["action"] = torch.nan_to_num(batch["action"], 0.0)
@@ -61,29 +39,15 @@ def lejepa_bisim_forward(self, batch, stage, cfg):
 
     # LeWM losses
     output["pred_loss"] = (pred_emb - tgt_emb).pow(2).mean()
-    output["sigreg_loss"] = self.sigreg(emb.transpose(0, 1))
-
-    # Bisim loss with lambda warmup
-    output["bisim_loss"] = compute_bisim_loss(emb, act_emb)
-    lambd_bisim = get_effective_bisim_lambda(
-        self.trainer.current_epoch,
-        cfg.loss.bisim.weight,
-        cfg.loss.bisim.warmup_epochs,
-    )
-
-    output["loss"] = (
-        output["pred_loss"]
-        + lambd_sigreg * output["sigreg_loss"]
-        + lambd_bisim * output["bisim_loss"]
-    )
+    output["rdmreg_loss"] = self.rdmreg(emb)
+    output["loss"] = output["pred_loss"] + lambd * output["rdmreg_loss"]
 
     losses_dict = {f"{stage}/{k}": v.detach() for k, v in output.items() if "loss" in k}
-    losses_dict[f"{stage}/lambda_bisim"] = float(lambd_bisim)
     self.log_dict(losses_dict, on_step=True, sync_dist=True)
     return output
 
 
-@hydra.main(version_base=None, config_path="./config/train", config_name="lewm_bisim")
+@hydra.main(version_base=None, config_path="./config/train", config_name="lewm_rdmreg")
 def run(cfg):
     #########################
     ##       dataset       ##
@@ -160,6 +124,7 @@ def run(cfg):
         projector=projector,
         pred_proj=predictor_proj,
     )
+    world_model = torch.compile(world_model)
 
     optimizers = {
         'model_opt': {
@@ -173,8 +138,8 @@ def run(cfg):
     data_module = spt.data.DataModule(train=train, val=val)
     world_model = spt.Module(
         model=world_model,
-        sigreg=SIGReg(**cfg.loss.sigreg.kwargs),
-        forward=partial(lejepa_bisim_forward, cfg=cfg),
+        rdmreg=RDMReg(**cfg.loss.rdmreg.kwargs),
+        forward=partial(lejepa_rdmreg_forward, cfg=cfg),
         optim=optimizers,
     )
 
