@@ -22,6 +22,10 @@ def lejepa_forward(self, batch, stage, cfg):
     n_preds = cfg.wm.num_preds
     lambd = cfg.loss.sigreg.weight
 
+    # Upcast float16 pixels from DataLoader to bfloat16 for model
+    if batch["pixels"].dtype == torch.float16:
+        batch["pixels"] = batch["pixels"].to(torch.bfloat16)
+
     # Replace NaN values with 0 (occurs at sequence boundaries)
     batch["action"] = torch.nan_to_num(batch["action"], 0.0)
 
@@ -51,9 +55,9 @@ def run(cfg):
     ##       dataset       ##
     #########################
 
-    dataset = swm.data.HDF5Dataset(**cfg.data.dataset, transform=None)
+    dataset = swm.data.LMDBDataset(**cfg.data.dataset, transform=None)
     transforms = [get_img_preprocessor(source='pixels', target='pixels', img_size=cfg.img_size)]
-    
+
     with open_dict(cfg):
         for col in cfg.data.dataset.keys_to_load:
             if col.startswith("pixels"):
@@ -64,6 +68,13 @@ def run(cfg):
 
             setattr(cfg.wm, f"{col}_dim", dataset.get_dim(col))
 
+    # Convert preprocessed pixels to float16 to reduce DataLoader IPC overhead
+    class PixelsToHalf:
+        def __call__(self, x):
+            x['pixels'] = x['pixels'].half()
+            return x
+
+    transforms.append(PixelsToHalf())
     transform = spt.data.transforms.Compose(*transforms)
     dataset.transform = transform
 
@@ -122,6 +133,8 @@ def run(cfg):
         projector=projector,
         pred_proj=predictor_proj,
     )
+
+    world_model = torch.compile(world_model)
 
     optimizers = {
         'model_opt': {

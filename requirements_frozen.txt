@@ -104,7 +104,7 @@ opencv-python==4.13.0.92
 opt_einsum==3.4.0
 optax==0.2.8
 orbax-checkpoint==0.11.33
-packaging @ file:///home/conda/feedstock_root/build_artifacts/bld/rattler-build_packaging_1769093650/work
+packaging
 pandas==2.3.3
 pillow==11.3.0
 platformdirs==4.9.4

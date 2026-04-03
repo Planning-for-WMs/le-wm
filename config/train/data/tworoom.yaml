@@ -2,6 +2,7 @@ dataset:
   num_steps: ${eval:'${wm.num_preds} + ${wm.history_size}'}
   frameskip: 5
   name: tworoom
+  cache_dir: ${hydra:runtime.cwd}/dataset
   keys_to_load:
     - pixels
     - action

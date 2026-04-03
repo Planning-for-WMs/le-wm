@@ -8,7 +8,7 @@ subdir: ${hydra:job.id}
 num_workers: 6
 train_split: 0.9
 seed: 3072
-img_size: 224
+img_size: 112
 patch_size: 14
 encoder_scale: tiny
 dump_object: True
@@ -37,14 +37,14 @@ wandb:
   config:
     entity: wms_at_iitb
     project: le-wm
-    name: ${output_model_name}
+    name: lewm_tworoom_lmdb_d
     id: ${subdir}
     resume: allow
     log_model: False
 
 wm:
   type: lewm
-  history_size: 3
+  history_size: 1
   num_preds: 1
   embed_dim: 192
 
@@ -61,4 +61,4 @@ loss:
     weight: 0.09
     kwargs:
       knots: 17
-      num_proj: 1024
+      num_proj: 256

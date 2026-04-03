@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-04-03T16:23:05.671216",
+  "python": {
+    "version": "3.11.15 (main, Mar 24 2026, 22:50:29) [Clang 22.1.1 ]",
+    "version_info": {
+      "major": 3,
+      "minor": 11,
+      "micro": 15
+    },
+    "executable": "/home/aarav/wms/le-wm/le-wm/bin/python",
+    "prefix": "/home/aarav/wms/le-wm/le-wm"
+  },
+  "system": {
+    "platform": "Linux-6.17.0-19-generic-x86_64-with-glibc2.39",
+    "system": "Linux",
+    "release": "6.17.0-19-generic",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "hostname": "dm"
+  },
+  "packages": {
+    "pip_freeze": "Error: pip freeze timed out",
+    "key_packages": {},
+    "total_packages": 0
+  },
+  "cuda": {
+    "nvidia_smi_output": "NVIDIA RTX 4000 Ada Generation, 580.126.09, 20475 MiB",
+    "driver_version": "580.126.09"
+  },
+  "git": {
+    "commit_hash": "55b40d2e080925b846729c727360d294a1976d7c",
+    "branch": "main",
+    "has_uncommitted_changes": true,
+    "uncommitted_changes": "D bisim_sweep.pdf\n M config/train/data/tworoom.yaml\n M config/train/lewm.yaml\n D config/train/lewm_bisim.yaml\n D config/train/lewm_bisim_fast.yaml\n D config/train/lewm_rdmreg.yaml\n D main.py\n D plot_sweeps.py\n D rdmreg.py\n D rdmreg_sweep.pdf\n M requirements_frozen.txt\n D sweep_bisim.py\n D sweep_rdmreg.py\n D sweeps_by_epoch.pdf\n M train.py\n D train_bisim.py\n D train_bisim_fast.py\n D train_rdmreg.py\n?? config/convert/\n?? convert_to_lmdb.py\n?? lightning_logs/version_10/\n?? lightning_logs/version_11/\n?? lightning_logs/version_12/\n?? lightning_logs/version_13/\n?? lightning_logs/version_14/\n?? lightning_logs/version_15/\n?? lightning_logs/version_16/\n?? lightning_logs/version_17/\n?? lightning_logs/version_18/\n?? lightning_logs/version_19/\n?? lightning_logs/version_20/\n?? lightning_logs/version_21/\n?? lightning_logs/version_22/\n?? lightning_logs/version_23/\n?? lightning_logs/version_24/\n?? lightning_logs/version_25/\n?? lightning_logs/version_26/\n?? lightning_logs/version_27/\n?? lightning_logs/version_28/\n?? lightning_logs/version_29/\n?? lightning_logs/version_30/\n?? lightning_logs/version_31/\n?? lightning_logs/version_32/\n?? lightning_logs/version_33/\n?? lightning_logs/version_34/\n?? lightning_logs/version_35/\n?? lightning_logs/version_36/\n?? lightning_logs/version_37/\n?? lightning_logs/version_38/\n?? lightning_logs/version_39/\n?? lightning_logs/version_40/\n?? lightning_logs/version_41/\n?? lightning_logs/version_42/\n?? lightning_logs/version_43/\n?? lightning_logs/version_44/\n?? lightning_logs/version_45/\n?? lightning_logs/version_46/\n?? lightning_logs/version_47/\n?? lightning_logs/version_48/\n?? lightning_logs/version_9/",
+    "remote_url": "https://github.com/Planning-for-WMs/le-wm.git"
+  },
+  "slurm": null,
+  "environment_variables": {
+    "PATH": "/home/aarav/wms/le-wm/le-wm/bin:/home/aarav/.local/bin:/home/aarav/.vscode-server/data/User/globalStorage/github.copilot-chat/debugCommand:/home/aarav/.vscode-server/data/User/globalStorage/github.copilot-chat/copilotCli:/home/aarav/.vscode-server/cli/servers/Stable-e7fb5e96c0730b9deb70b33781f98e2f35975036/server/bin/remote-cli:/home/aarav/.local/bin:/home/aarav/.local/bin:/home/aarav/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/aarav/.vscode-server/extensions/ms-python.debugpy-2025.18.0-linux-x64/bundled/scripts/noConfigScripts",
+    "LD_LIBRARY_PATH": "/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/cv2/../../lib64:",
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID"
+  }
+}

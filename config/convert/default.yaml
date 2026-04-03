@@ -1,0 +1,22 @@
+# HDF5 to LMDB conversion config
+
+# Source HDF5 file
+h5_path: dataset/tworoom.h5
+
+# Output LMDB path
+out_path: dataset/tworoom.lmdb
+
+# Key in HDF5 containing image data
+pixel_key: pixels
+
+# Target image size (square)
+img_size: 112
+
+# Encoding: "jpeg" (compressed, smaller on disk) or "raw" (uncompressed, no decode overhead)
+encoding: jpeg
+
+# JPEG quality (1-100, only used when encoding=jpeg)
+jpeg_quality: 95
+
+# Number of frames to read from HDF5 per batch
+batch_size: 4096
