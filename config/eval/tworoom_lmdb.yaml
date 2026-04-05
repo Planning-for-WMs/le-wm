@@ -12,6 +12,8 @@ world:
 
 seed: 42
 policy: random # ckpt name or random
+use_lmdb: true
+cache_dir: ${hydra:runtime.cwd}/dataset
 
 dataset:
   stats: ${eval.dataset_name}
@@ -29,7 +31,7 @@ eval:
   num_eval: 50
   goal_offset_steps: 25
   eval_budget: 50
-  img_size: 224
+  img_size: 112
   dataset_name: tworoom
   callables:
     # -- set state
@@ -44,4 +46,4 @@ eval:
           value: goal_proprio
 
 output:
-  filename: tworoom_results.txt
+  filename: tworoom_lmdb_results.txt
