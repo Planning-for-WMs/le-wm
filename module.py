@@ -193,14 +193,16 @@ class Embedder(nn.Module):
         smoothed_dim=10,
         emb_dim=10,
         mlp_scale=4,
+        mlp_depth=2,
     ):
         super().__init__()
         self.patch_embed = nn.Conv1d(input_dim, smoothed_dim, kernel_size=1, stride=1)
-        self.embed = nn.Sequential(
-            nn.Linear(smoothed_dim, mlp_scale * emb_dim),
-            nn.SiLU(),
-            nn.Linear(mlp_scale * emb_dim, emb_dim),
-        )
+        hidden = mlp_scale * emb_dim
+        layers = [nn.Linear(smoothed_dim, hidden), nn.SiLU()]
+        for _ in range(mlp_depth - 1):
+            layers += [nn.Linear(hidden, hidden), nn.SiLU()]
+        layers.append(nn.Linear(hidden, emb_dim))
+        self.embed = nn.Sequential(*layers)
 
     def forward(self, x):
         """
@@ -242,7 +244,20 @@ class MLP(nn.Module):
 
 
 class ARPredictor(nn.Module):
-    """Autoregressive predictor for next-step embedding prediction."""
+    """Autoregressive predictor for next-step embedding prediction.
+
+    Supports two modes controlled by ``num_patches``:
+
+    - ``num_patches=0`` (default / legacy): frame-level prediction.
+      Input ``x`` is ``(B, T, D)``, conditioning ``c`` is ``(B, T, D)``.
+
+    - ``num_patches > 0``: patch-level prediction.
+      Input ``x`` is ``(B, T, N, D)`` (per-patch embeddings per frame).
+      The predictor flattens ``T*N`` into the sequence dimension, adds
+      decomposed (time + patch) positional embeddings, tiles the per-frame
+      action conditioning ``c`` across patches, and runs the transformer on
+      the full ``T*N`` sequence. Output is ``(B, T, N, D_out)``.
+    """
 
     def __init__(
         self,
@@ -257,10 +272,19 @@ class ARPredictor(nn.Module):
         dim_head=64,
         dropout=0.0,
         emb_dropout=0.0,
+        num_patches=0,
     ):
         super().__init__()
-        self.pos_embedding = nn.Parameter(torch.randn(1, num_frames, input_dim))
+        self.num_patches = num_patches
         self.dropout = nn.Dropout(emb_dropout)
+
+        if num_patches > 0:
+            # Decomposed positional embeddings: time + patch, broadcast-added.
+            self.time_pos = nn.Parameter(torch.randn(1, num_frames, 1, input_dim))
+            self.patch_pos = nn.Parameter(torch.randn(1, 1, num_patches, input_dim))
+        else:
+            self.pos_embedding = nn.Parameter(torch.randn(1, num_frames, input_dim))
+
         self.transformer = Transformer(
             input_dim,
             hidden_dim,
@@ -275,11 +299,33 @@ class ARPredictor(nn.Module):
 
     def forward(self, x, c):
         """
-        x: (B, T, d)
-        c: (B, T, act_dim)
+        Frame-level (num_patches=0):
+            x: (B, T, D)
+            c: (B, T, D_act)
+            returns: (B, T, D_out)
+
+        Patch-level (num_patches>0):
+            x: (B, T, N, D)
+            c: (B, T, D_act)
+            returns: (B, T, N, D_out)
         """
-        T = x.size(1)
-        x = x + self.pos_embedding[:, :T]
-        x = self.dropout(x)
-        x = self.transformer(x, c)
-        return x
+        if self.num_patches > 0:
+            B, T, N, D = x.shape
+            # Add decomposed positional embeddings.
+            x = x + self.time_pos[:, :T, :, :] + self.patch_pos[:, :, :N, :]
+            # Flatten T*N into the sequence dim.
+            x = rearrange(x, "b t n d -> b (t n) d")
+            # Tile action conditioning: each patch at time t gets the same c_t.
+            c = c.unsqueeze(2).expand(B, T, N, -1)
+            c = rearrange(c, "b t n d -> b (t n) d")
+            x = self.dropout(x)
+            x = self.transformer(x, c)
+            # Unflatten back to (B, T, N, D_out).
+            x = rearrange(x, "b (t n) d -> b t n d", t=T, n=N)
+            return x
+        else:
+            T = x.size(1)
+            x = x + self.pos_embedding[:, :T]
+            x = self.dropout(x)
+            x = self.transformer(x, c)
+            return x

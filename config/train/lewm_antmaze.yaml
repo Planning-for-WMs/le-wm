@@ -1,0 +1,103 @@
+defaults:
+  - _self_
+  - data: antmaze
+
+output_model_name: lewm_antmaze
+subdir: ${hydra:job.id}
+ckpt_every_n_epochs: 2
+
+num_workers: 6
+train_split: 0.9
+seed: 3072
+img_size: 224
+patch_size: 14
+encoder_scale: small
+# Extra kwargs forwarded to `spt.backbone.utils.vit_hf(...)`, which accepts
+# any HuggingFace `ViTConfig` field via **kwargs. Use this to override the
+# preset baked into `encoder_scale` (e.g. deeper/wider, add dropout) without
+# editing code. Full preset table:
+#   tiny : hidden=192  layers=12 heads=3  mlp=768
+#   small: hidden=384  layers=12 heads=6  mlp=1536
+#   base : hidden=768  layers=12 heads=12 mlp=3072
+#   large: hidden=1024 layers=24 heads=16 mlp=4096
+#   huge : hidden=1280 layers=32 heads=16 mlp=5120
+# Leave empty to use the preset unchanged.
+encoder_kwargs: {}
+  # num_hidden_layers: 18
+  # hidden_dropout_prob: 0.1
+  # attention_probs_dropout_prob: 0.1
+  # hidden_size: 256          # override tiny's 192
+  # intermediate_size: 1024   # MLP inner dim; overrides the auto-computed 4x
+dump_object: True
+
+trainer:
+  max_epochs: 100
+  devices: auto
+  accelerator: gpu
+  precision: bf16
+  gradient_clip_val: 1.0
+
+loader:
+  batch_size: 16
+  num_workers: ${num_workers}
+  persistent_workers: True
+  prefetch_factor: 3
+  pin_memory: True
+
+optimizer:
+  type: AdamW
+  lr: 5e-5
+  weight_decay: 1e-3
+
+wandb:
+  enabled: True
+  config:
+    entity: wms_at_iitb
+    project: le-wm-antmaze
+    name: lewm_antmaze_medium_explore_70M_params
+    id: ${subdir}
+    resume: allow
+    log_model: False
+
+wm:
+  type: lewm
+  history_size: 3
+  num_preds: 1
+  embed_dim: 192
+  action_dim: 8
+
+action_encoder:
+  smoothed_dim: 64
+  mlp_scale: 4
+  mlp_depth: 3
+
+# Predictor: ~44M params (~2x the ViT-small encoder).
+predictor:
+  depth: 12
+  heads: 12
+  mlp_dim: 2048
+  dim_head: 64
+  dropout: 0.1
+  emb_dropout: 0.0
+
+loss:
+  sigreg:
+    weight: 0.09
+    kwargs:
+      knots: 17
+      num_proj: 256
+
+compile_model: False  # torch.compile incompatible with PeriodicMPCEvalCallback
+
+# Latent visualisation callback (t-SNE + PCA of encoder latents during training).
+latent_viz:
+  enabled: True
+  every_n_epochs: 2
+  num_points: 2000
+  tsne_perplexity: 30
+
+# RankMe: effective-rank diagnostic on encoder latents. Low rankme (~1) is a
+# direct collapse signal; healthy values are closer to embed_dim (192).
+rankme:
+  enabled: True
+  queue_length: 2048

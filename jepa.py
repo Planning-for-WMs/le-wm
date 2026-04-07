@@ -29,15 +29,26 @@ class JEPA(nn.Module):
     def encode(self, info):
         """Encode observations and actions into embeddings.
         info: dict with pixels and action keys
+
+        Outputs stored in ``info``:
+            emb_patches : (B, T, N_patches, embed_dim) — per-patch projected
+                          embeddings (used by SIGReg which checks Gaussianity
+                          at the patch level, not pooled).
+            emb         : (B, T, embed_dim) — mean-pooled over patches (used
+                          by the predictor, rollout, and cost functions which
+                          operate at the frame level).
         """
 
         pixels = info['pixels'].float()
         b = pixels.size(0)
         pixels = rearrange(pixels, "b t ... -> (b t) ...") # flatten for encoding
         output = self.encoder(pixels, interpolate_pos_encoding=True)
-        pixels_emb = output.last_hidden_state[:, 0]  # cls token
-        emb = self.projector(pixels_emb)
-        info["emb"] = rearrange(emb, "(b t) d -> b t d", b=b)
+        patches = output.last_hidden_state[:, 1:]  # all patch tokens, skip CLS — (B*T, N, hidden)
+        bt, n, h = patches.shape
+        proj_patches = self.projector(patches.reshape(bt * n, h))  # (B*T*N, embed_dim)
+        proj_patches = proj_patches.reshape(bt, n, -1)  # (B*T, N, embed_dim)
+        info["emb_patches"] = rearrange(proj_patches, "(b t) n d -> b t n d", b=b)
+        info["emb"] = rearrange(proj_patches.mean(dim=1), "(b t) d -> b t d", b=b)
 
         if "action" in info:
             info["act_emb"] = self.action_encoder(info["action"])
@@ -45,13 +56,29 @@ class JEPA(nn.Module):
         return info
 
     def predict(self, emb, act_emb):
-        """Predict next state embedding
-        emb: (B, T, D)
-        act_emb: (B, T, A_emb)
+        """Predict next state embedding.
+
+        Supports both frame-level and patch-level prediction depending on
+        the predictor's ``num_patches`` setting:
+
+        Frame-level (legacy):
+            emb: (B, T, D), act_emb: (B, T, A_emb) → returns (B, T, D)
+
+        Patch-level:
+            emb: (B, T, N, D), act_emb: (B, T, A_emb) → returns (B, T, N, D)
+            pred_proj is applied per-patch.
         """
         preds = self.predictor(emb, act_emb)
-        preds = self.pred_proj(rearrange(preds, "b t d -> (b t) d"))
-        preds = rearrange(preds, "(b t) d -> b t d", b=emb.size(0))
+
+        if preds.ndim == 4:
+            # Patch-level: (B, T, N, D_hidden)
+            B, T, N, D = preds.shape
+            preds = self.pred_proj(preds.reshape(B * T * N, D))
+            preds = preds.reshape(B, T, N, -1)
+        else:
+            # Frame-level: (B, T, D_hidden)
+            preds = self.pred_proj(rearrange(preds, "b t d -> (b t) d"))
+            preds = rearrange(preds, "(b t) d -> b t d", b=emb.size(0))
         return preds
 
     ####################
@@ -64,6 +91,10 @@ class JEPA(nn.Module):
         action_sequence: (B, S, T, action_dim)
          - S is the number of action plan samples
          - T is the time horizon
+
+        Works at patch level when the predictor has ``num_patches > 0``:
+        the autoregressive loop carries forward per-patch embeddings and
+        pools only at the end for the cost function (``predicted_emb``).
         """
 
         assert "pixels" in info, "pixels not in info_dict"
@@ -76,32 +107,44 @@ class JEPA(nn.Module):
         # copy and encode initial info dict
         _init = {k: v[:, 0] for k, v in info.items() if torch.is_tensor(v)}
         _init = self.encode(_init)
-        emb = info["emb"] = _init["emb"].unsqueeze(1).expand(B, S, -1, -1)
+
+        patch_level = self.predictor.num_patches > 0
+
+        if patch_level:
+            # Use per-patch embeddings: (B, T_hist, N, D)
+            emb_patches = _init["emb_patches"].unsqueeze(1).expand(B, S, -1, -1, -1)
+            emb_patches = rearrange(emb_patches, "b s ... -> (b s) ...").clone()
+        # Always keep a pooled track for the cost function.
+        emb = _init["emb"].unsqueeze(1).expand(B, S, -1, -1)
+        info["emb"] = emb
         _init = {k: detach_clone(v) for k, v in _init.items()}
 
-        # flatten batch and sample dimensions for rollout
         emb = rearrange(emb, "b s ... -> (b s) ...").clone()
         act = rearrange(act_0, "b s ... -> (b s) ...")
         act_future = rearrange(act_future, "b s ... -> (b s) ...")
 
-        # rollout predictor autoregressively for n_steps
+        # rollout predictor autoregressively for n_steps + 1 (the last predict)
         HS = history_size
-        for t in range(n_steps):
+        for t in range(n_steps + 1):
             act_emb = self.action_encoder(act)
-            emb_trunc = emb[:, -HS:]  # (BS, HS, D)
-            act_trunc = act_emb[:, -HS:]  # (BS, HS, A_emb)
-            pred_emb = self.predict(emb_trunc, act_trunc)[:, -1:]  # (BS, 1, D)
-            emb = torch.cat([emb, pred_emb], dim=1)  # (BS, T+1, D)
 
-            next_act = act_future[:, t : t + 1, :]  # (BS, 1, action_dim)
-            act = torch.cat([act, next_act], dim=1)  # (BS, T+1, action_dim)
+            if patch_level:
+                emb_trunc = emb_patches[:, -HS:]      # (BS, HS, N, D)
+                act_trunc = act_emb[:, -HS:]           # (BS, HS, A_emb)
+                pred = self.predict(emb_trunc, act_trunc)[:, -1:]  # (BS, 1, N, D)
+                emb_patches = torch.cat([emb_patches, pred], dim=1)
+                # Pool for the frame-level track.
+                pred_pooled = pred.mean(dim=2)         # (BS, 1, D)
+            else:
+                emb_trunc = emb[:, -HS:]               # (BS, HS, D)
+                act_trunc = act_emb[:, -HS:]
+                pred_pooled = self.predict(emb_trunc, act_trunc)[:, -1:]  # (BS, 1, D)
 
-        # predict the last state
-        act_emb = self.action_encoder(act)  # (BS, T, A_emb)
-        emb_trunc = emb[:, -HS:]  # (BS, HS, D)
-        act_trunc = act_emb[:, -HS:]  # (BS, HS, A_emb)
-        pred_emb = self.predict(emb_trunc, act_trunc)[:, -1:]  # (BS, 1, D)
-        emb = torch.cat([emb, pred_emb], dim=1)
+            emb = torch.cat([emb, pred_pooled], dim=1)
+
+            if t < n_steps:
+                next_act = act_future[:, t : t + 1, :]
+                act = torch.cat([act, next_act], dim=1)
 
         # unflatten batch and sample dimensions
         pred_rollout = rearrange(emb, "(b s) ... -> b s ...", b=B, s=S)

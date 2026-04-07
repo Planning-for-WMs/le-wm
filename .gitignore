@@ -8,3 +8,5 @@ dataset/
 __pycache__
 dataset_fast
 lightning_logs/
+le-wm-antmaze
+le-wm

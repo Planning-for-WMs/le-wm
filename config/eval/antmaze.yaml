@@ -1,0 +1,58 @@
+defaults:
+  - solver: cem
+  - _self_
+
+# Raw og-bench env; not wrapped in stable_worldmodel.World (we drive the
+# rollout ourselves for fine-grained logging).
+env:
+  dataset_name: antmaze-medium-explore-v0
+  img_size: 224
+  # null => use ogbench's built-in top-down maze camera (elevation=-90,
+  # framed on the full maze). Set to a string (e.g. "back") to override.
+  camera_name: null
+
+use_lmdb: true
+cache_dir: ${hydra:runtime.cwd}/dataset
+
+dataset:
+  name: antmaze_medium_explore
+  keys_to_load:
+    - pixels
+    - action
+    - observation
+
+seed: 42
+policy: ???  # required: e.g. policy=<run_id>/lewm_antmaze_epoch_50
+
+# Must match the training config's wm.history_size so the predictor sees
+# the same number of context frames it was trained on.
+history_size: 3
+
+# Closed-loop MPC settings.
+# frameskip matches training (5). One plan step == 5 env steps.
+# plan horizon = 10 plan steps = 50 env steps lookahead.
+# receding horizon = 2 plan steps = 10 env steps executed before replan.
+plan_config:
+  horizon: 10
+  receding_horizon: 2
+  action_block: 5
+  history_len: ${history_size}
+  warm_start: true
+
+eval:
+  num_rollouts: 3
+  traj_steps: 500
+  seed: 0
+
+latent_viz:
+  num_points: 2000
+  tsne_perplexity: 30
+
+wandb:
+  enabled: true
+  entity: wms_at_iitb
+  project: le-wm-antmaze
+  name: eval_lewm_antmaze_medium_explore
+
+output:
+  filename: antmaze_results.txt
