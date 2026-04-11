@@ -10,3 +10,8 @@ dataset_fast
 lightning_logs/
 le-wm-antmaze
 le-wm
+*_results.txt
+hierarchical/viz
+hierarchical/dino_wm_src
+hierarchical/ckpt
+RadialVCReg/
