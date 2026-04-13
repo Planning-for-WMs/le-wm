@@ -1,13 +1,12 @@
 dataset:
   num_steps: ${eval:'${wm.num_preds} + ${wm.history_size}'}
   frameskip: 5
-  name: pusht_expert_train_rechunked
+  name: pusht_train_${img_size}.lmdb
+  cache_dir: ${hydra:runtime.cwd}/dataset
   keys_to_load:
     - pixels
     - action
-    - proprio
-    - state
+    - observation
   keys_to_cache:
     - action
-    - proprio
-    - state
+    - observation

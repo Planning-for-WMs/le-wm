@@ -1,0 +1,84 @@
+defaults:
+  - _self_
+  - data: pusht
+
+output_model_name: lewm_pusht
+subdir: ${hydra:job.id}
+ckpt_every_n_epochs: 1
+
+num_workers: 6
+train_split: 0.9
+seed: 42
+img_size: 112
+patch_size: 14
+encoder_scale: tiny       # 6.4 M params; img=112 keeps activations small
+encoder_kwargs: {}
+dump_object: True
+
+trainer:
+  max_epochs: 100
+  devices: auto
+  accelerator: gpu
+  precision: bf16
+  gradient_clip_val: 1.0
+
+loader:
+  batch_size: 64
+  num_workers: ${num_workers}
+  persistent_workers: True
+  prefetch_factor: 3
+  pin_memory: True
+
+optimizer:
+  type: AdamW
+  lr: 5e-4
+  weight_decay: 1e-4
+
+wandb:
+  enabled: False
+  config:
+    entity: wms_at_iitb
+    project: le-wm-pusht
+    name: lewm_pusht_h${wm.history_size}_${img_size}px
+    id: ${subdir}
+    resume: allow
+    log_model: True
+
+wm:
+  type: lewm
+  history_size: 5         # match HWM-paper context length
+  num_preds: 1
+  embed_dim: 192
+  action_dim: 2           # 2-D primitive action; frameskip=5 → 10-d per plan-step
+
+action_encoder:
+  smoothed_dim: 64
+  mlp_scale: 4
+  mlp_depth: 3
+
+predictor:
+  depth: 12
+  heads: 12
+  mlp_dim: 2048
+  dim_head: 64
+  dropout: 0.1
+  emb_dropout: 0.0
+
+loss:
+  sigreg:
+    weight: 0.09
+    kwargs:
+      knots: 17
+      num_proj: 256
+
+compile_model: False
+
+latent_viz:
+  enabled: True
+  every_n_epochs: 1
+  num_points: 2000
+  tsne_perplexity: 30
+
+rankme:
+  enabled: True
+  queue_length: 2048

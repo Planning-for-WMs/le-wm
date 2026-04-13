@@ -1,0 +1,58 @@
+defaults:
+  - solver: cem
+  - _self_
+
+# swm/PushT-v1 is registered via `import stable_worldmodel`. Action space is
+# [-1, 1]^2 relative deltas; env internally multiplies by action_scale=100.
+env:
+  name: swm/PushT-v1
+  img_size: 112
+  max_episode_steps: 200   # must be >= eval_budget
+
+use_lmdb: true
+cache_dir: ${hydra:runtime.cwd}/dataset
+
+dataset:
+  name: pusht_val_${env.img_size}.lmdb   # val split only — goals come from here
+  keys_to_load:
+    - pixels
+    - action
+    - observation
+    - state
+
+seed: 42
+policy: ???  # required: path to LeWM checkpoint produced by train_pusht.py
+
+# Must match the training config's wm.history_size so the predictor sees the
+# same number of context frames it was trained on.
+history_size: 5
+
+# Closed-loop MPC settings (d=25 setup from the HWM paper).
+# frameskip matches training (5). One plan step == 5 raw env steps.
+plan_config:
+  horizon: 5
+  receding_horizon: 5
+  action_block: 5          # = frameskip
+  history_len: ${history_size}
+  warm_start: false
+
+eval:
+  num_rollouts: 20
+  eval_budget: 50          # raw env steps per rollout
+  goal_offset_steps: 25    # raw steps into source trajectory for goal frame
+  seed: 0
+  pos_threshold: 20.0      # official PushT: agent+block 4-d pos_diff < 20
+  angle_threshold: 0.349   # π/9 rad ≈ 20°
+
+latent_viz:
+  num_points: 2000
+  tsne_perplexity: 30
+
+wandb:
+  enabled: true
+  entity: wms_at_iitb
+  project: le-wm-pusht
+  name: eval_lewm_pusht_d${eval.goal_offset_steps}
+
+output:
+  filename: pusht_results.txt
