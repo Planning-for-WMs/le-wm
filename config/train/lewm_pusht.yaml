@@ -6,7 +6,7 @@ output_model_name: lewm_pusht
 subdir: ${hydra:job.id}
 ckpt_every_n_epochs: 1
 
-num_workers: 6
+num_workers: 11
 train_split: 0.9
 seed: 42
 img_size: 112
@@ -23,7 +23,7 @@ trainer:
   gradient_clip_val: 1.0
 
 loader:
-  batch_size: 64
+  batch_size: 400
   num_workers: ${num_workers}
   persistent_workers: True
   prefetch_factor: 3
@@ -35,7 +35,7 @@ optimizer:
   weight_decay: 1e-4
 
 wandb:
-  enabled: False
+  enabled: True
   config:
     entity: wms_at_iitb
     project: le-wm-pusht

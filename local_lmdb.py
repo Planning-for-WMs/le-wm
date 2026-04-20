@@ -91,7 +91,15 @@ class LMDBDataset(Dataset):
 
     def get_row_data(self, row_idx) -> dict:
         rows = list(row_idx) if isinstance(row_idx, (list, tuple, np.ndarray)) else [row_idx]
-        out = {col: self._meta[col][rows] for col in self.meta_keys_all if col in self._meta}
+        # ep_len / ep_offset are per-episode (length n_eps), the other meta
+        # columns are per-frame (length n_frames). Skip the per-episode ones
+        # so we don't try to index them with frame rows.
+        per_episode = {"ep_len", "ep_offset"}
+        out = {
+            col: self._meta[col][rows]
+            for col in self.meta_keys_all
+            if col in self._meta and col not in per_episode
+        }
         if "pixels" in self._keys:
             out["pixels"] = np.stack([self._decode_frame(i) for i in rows], axis=0)
         return out
