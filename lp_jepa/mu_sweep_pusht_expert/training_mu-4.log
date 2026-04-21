@@ -1,0 +1,8 @@
+Could not override 'loss.rdmreg.kwargs.mu'.
+To append to your config use +loss.rdmreg.kwargs.mu=-4
+Key 'mu' is not in struct
+    full_key: loss.rdmreg.kwargs.mu
+    object_type=dict
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+TRAINING_EXITED_1

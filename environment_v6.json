@@ -1,0 +1,43 @@
+{
+  "timestamp": "2026-04-12T23:57:05.362467",
+  "python": {
+    "version": "3.11.15 (main, Mar 24 2026, 22:50:29) [Clang 22.1.1 ]",
+    "version_info": {
+      "major": 3,
+      "minor": 11,
+      "micro": 15
+    },
+    "executable": "/home/aarav/wms/le-wm/le-wm/bin/python",
+    "prefix": "/home/aarav/wms/le-wm/le-wm"
+  },
+  "system": {
+    "platform": "Linux-6.17.0-20-generic-x86_64-with-glibc2.39",
+    "system": "Linux",
+    "release": "6.17.0-20-generic",
+    "machine": "x86_64",
+    "processor": "x86_64",
+    "hostname": "dm"
+  },
+  "packages": {
+    "pip_freeze": "Error getting pip freeze: Command '['/home/aarav/wms/le-wm/le-wm/bin/python', '-m', 'pip', 'freeze']' returned non-zero exit status 1.",
+    "key_packages": {},
+    "total_packages": 0
+  },
+  "cuda": {
+    "nvidia_smi_output": "NVIDIA RTX 4000 Ada Generation, 580.126.09, 20475 MiB",
+    "driver_version": "580.126.09"
+  },
+  "git": {
+    "commit_hash": "abdc04e2e3ec3a1684725ad02ca28b207fad939a",
+    "branch": "main",
+    "has_uncommitted_changes": true,
+    "uncommitted_changes": "?? config/train/data/pusht_50steps.yaml\n?? config/train/data/pusht_expert.yaml\n?? config/train/lewm_lp_jepa.yaml\n?? config/train/lewm_lp_jepa_pusht.yaml\n?? config/train/lewm_lp_jepa_pusht_expert.yaml\n?? environment.json\n?? environment_v1.json\n?? environment_v2.json\n?? environment_v3.json\n?? environment_v4.json\n?? environment_v5.json\n?? lp_jepa/\n?? requirements_frozen.txt\n?? requirements_frozen_v1.txt\n?? requirements_frozen_v2.txt\n?? requirements_frozen_v3.txt\n?? requirements_frozen_v4.txt\n?? requirements_frozen_v5.txt",
+    "remote_url": "https://github.com/Planning-for-WMs/le-wm.git"
+  },
+  "slurm": null,
+  "environment_variables": {
+    "PATH": "/home/aarav/wms/le-wm/le-wm/bin:/home/aarav/wms/le-wm/le-wm/bin:/home/aarav/.local/bin:/home/aarav/.local/bin:/home/aarav/.vscode-server/cli/servers/Stable-41dd792b5e652393e7787322889ed5fdc58bd75b/server/bin/remote-cli:/home/aarav/.local/bin:/home/aarav/miniconda3/bin:/home/aarav/miniconda3/condabin:/home/aarav/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+    "LD_LIBRARY_PATH": "/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/cv2/../../lib64:",
+    "CUDA_DEVICE_ORDER": "PCI_BUS_ID"
+  }
+}

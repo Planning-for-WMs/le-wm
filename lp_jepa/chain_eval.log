@@ -1,0 +1,723 @@
+================================================================
+=== Sun Apr 12 02:47:29 AM IST 2026 === chain script PID 572953 started
+=== train log: /home/aarav/wms/le-wm/lp_jepa/training_tworoom_resume.log
+=== eval log : /home/aarav/wms/le-wm/lp_jepa/eval_sweep_tworoom.log
+================================================================
+=== Sun Apr 12 02:47:29 AM IST 2026 === waiting for training to finish (polling every 30s)
+=== Sun Apr 12 03:35:33 AM IST 2026 === no train_lp_jepa process detected
+=== Sun Apr 12 03:35:38 AM IST 2026 === training exited cleanly (TRAINING_EXITED_0 found)
+=== Sun Apr 12 03:35:38 AM IST 2026 === found epoch checkpoints: 1 2 3 4 5 6 7 8 9 10 
+=== Sun Apr 12 03:35:38 AM IST 2026 === starting tworoom_lmdb eval sweep
+=== Sun Apr 12 03:35:38 AM IST 2026 === EVAL epoch_1 START ===
+03:35:49.931 | INFO    (574320, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:35:49.931 | INFO    (574320, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:35:49.931 | INFO    (574320, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:35:49.931 | INFO    (574320, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:35:49.931 | INFO    (574320, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:35:49.931 | INFO    (574320, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:35:50,159][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:35:50,267][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:35:50,404][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:35:50,405][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:35:50,406][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:35:50,527][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:35:51,509][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:35:51,609][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:35:51,705][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:35:51,799][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:35:51,901][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:35:51,994][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:35:52,090][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:35:52,103][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:35:52,114][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 56.4680 seconds
+CEM solve time: 55.4331 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 38.0, 'episode_successes': array([ True, False,  True, False,  True, False,  True, False, False,
+       False,  True, False, False,  True, False,  True, False, False,
+       False, False, False,  True, False,  True, False,  True,  True,
+       False, False, False, False, False,  True, False,  True, False,
+        True, False, False, False, False,  True,  True,  True, False,
+       False,  True, False, False,  True]), 'seeds': None}
+=== Sun Apr 12 03:38:15 AM IST 2026 === epoch_1 DONE ===
+=== Sun Apr 12 03:38:15 AM IST 2026 === EVAL epoch_2 START ===
+03:38:19.930 | INFO    (576699, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:38:19.930 | INFO    (576699, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:38:19.930 | INFO    (576699, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:38:19.930 | INFO    (576699, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:38:19.930 | INFO    (576699, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:38:19.931 | INFO    (576699, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:38:19,941][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:38:19,947][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:38:19,950][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:38:19,950][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:38:19,950][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:38:19,955][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:38:20,009][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:38:20,016][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:38:20,019][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:38:20,023][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:38:20,027][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:38:20,030][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:38:20,034][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:38:20,034][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:38:20,034][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 55.4930 seconds
+CEM solve time: 55.5996 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 36.0, 'episode_successes': array([False, False,  True, False,  True, False, False, False, False,
+       False, False,  True,  True, False, False,  True, False, False,
+        True, False,  True,  True, False,  True, False,  True, False,
+       False, False,  True, False, False,  True,  True, False, False,
+       False,  True, False, False, False, False,  True, False,  True,
+       False,  True,  True, False, False]), 'seeds': None}
+=== Sun Apr 12 03:40:25 AM IST 2026 === epoch_2 DONE ===
+=== Sun Apr 12 03:40:25 AM IST 2026 === EVAL epoch_3 START ===
+03:40:29.526 | INFO    (579050, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:40:29.527 | INFO    (579050, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:40:29.527 | INFO    (579050, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:40:29.527 | INFO    (579050, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:40:29.527 | INFO    (579050, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:40:29.527 | INFO    (579050, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:40:29,537][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:40:29,543][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:40:29,546][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:40:29,546][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:40:29,547][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:40:29,552][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:40:29,606][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:40:29,612][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:40:29,615][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:40:29,618][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:40:29,622][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:40:29,625][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:40:29,628][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:40:29,629][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:40:29,629][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 55.8801 seconds
+CEM solve time: 55.8024 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 34.0, 'episode_successes': array([False, False,  True, False,  True, False, False, False, False,
+        True, False, False, False, False, False,  True, False,  True,
+        True,  True, False, False,  True,  True, False,  True,  True,
+       False, False, False, False, False,  True,  True, False, False,
+        True, False, False, False, False, False,  True, False, False,
+       False,  True,  True, False, False]), 'seeds': None}
+=== Sun Apr 12 03:42:34 AM IST 2026 === epoch_3 DONE ===
+=== Sun Apr 12 03:42:34 AM IST 2026 === EVAL epoch_4 START ===
+03:42:38.455 | INFO    (581396, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:42:38.455 | INFO    (581396, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:42:38.455 | INFO    (581396, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:42:38.456 | INFO    (581396, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:42:38.456 | INFO    (581396, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:42:38.456 | INFO    (581396, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:42:38,466][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:42:38,472][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:42:38,474][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:42:38,474][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:42:38,474][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:42:38,480][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:42:38,533][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:42:38,539][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:42:38,543][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:42:38,547][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:42:38,550][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:42:38,554][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:42:38,557][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:42:38,557][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:42:38,558][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 55.7485 seconds
+CEM solve time: 55.6192 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 20.0, 'episode_successes': array([False, False,  True, False,  True, False,  True, False, False,
+       False, False, False, False, False, False, False, False, False,
+       False, False, False, False, False, False, False,  True,  True,
+       False, False, False, False, False,  True, False,  True, False,
+       False, False, False, False,  True, False,  True, False, False,
+       False,  True, False, False, False]), 'seeds': None}
+=== Sun Apr 12 03:44:44 AM IST 2026 === epoch_4 DONE ===
+=== Sun Apr 12 03:44:44 AM IST 2026 === EVAL epoch_5 START ===
+03:44:48.593 | INFO    (583742, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:44:48.593 | INFO    (583742, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:44:48.593 | INFO    (583742, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:44:48.593 | INFO    (583742, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:44:48.594 | INFO    (583742, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:44:48.594 | INFO    (583742, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:44:48,603][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:44:48,609][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:44:48,612][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:44:48,612][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:44:48,612][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:44:48,617][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:44:48,671][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:44:48,678][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:44:48,681][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:44:48,685][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:44:48,689][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:44:48,693][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:44:48,697][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:44:48,697][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:44:48,697][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 56.0989 seconds
+CEM solve time: 55.8266 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 60.0, 'episode_successes': array([ True, False,  True, False,  True, False,  True, False, False,
+        True,  True, False, False, False,  True,  True,  True, False,
+        True,  True, False,  True, False,  True,  True,  True,  True,
+        True,  True,  True, False,  True,  True, False,  True, False,
+        True, False, False, False,  True, False,  True,  True,  True,
+       False,  True,  True, False,  True]), 'seeds': None}
+=== Sun Apr 12 03:46:57 AM IST 2026 === epoch_5 DONE ===
+=== Sun Apr 12 03:46:57 AM IST 2026 === EVAL epoch_6 START ===
+03:47:01.591 | INFO    (586088, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:47:01.591 | INFO    (586088, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:47:01.591 | INFO    (586088, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:47:01.591 | INFO    (586088, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:47:01.591 | INFO    (586088, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:47:01.591 | INFO    (586088, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:47:01,633][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:47:01,723][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:47:01,775][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:47:01,776][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:47:01,777][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:47:01,874][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:47:02,843][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:47:02,952][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:47:03,045][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:47:03,150][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:47:03,247][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:47:03,342][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:47:03,447][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:47:03,458][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:47:03,469][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 55.4131 seconds
+CEM solve time: 55.3872 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 46.0, 'episode_successes': array([False, False,  True, False,  True, False,  True, False, False,
+        True, False, False, False, False, False,  True,  True, False,
+        True,  True, False,  True, False,  True,  True,  True, False,
+        True, False, False, False, False,  True, False,  True, False,
+        True,  True, False, False,  True, False,  True,  True, False,
+       False,  True,  True,  True, False]), 'seeds': None}
+=== Sun Apr 12 03:49:08 AM IST 2026 === epoch_6 DONE ===
+=== Sun Apr 12 03:49:08 AM IST 2026 === EVAL epoch_7 START ===
+03:49:12.404 | INFO    (588460, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:49:12.404 | INFO    (588460, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:49:12.404 | INFO    (588460, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:49:12.404 | INFO    (588460, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:49:12.405 | INFO    (588460, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:49:12.405 | INFO    (588460, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:49:12,415][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:49:12,420][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:49:12,424][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:49:12,424][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:49:12,424][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:49:12,446][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:49:12,512][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:49:12,519][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:49:12,532][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:49:12,545][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:49:12,557][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:49:12,575][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:49:12,583][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:49:12,583][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:49:12,583][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 56.1675 seconds
+CEM solve time: 55.9595 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 30.0, 'episode_successes': array([False, False,  True,  True, False, False, False,  True, False,
+       False,  True, False,  True, False, False, False, False,  True,
+       False, False, False,  True, False,  True, False,  True, False,
+       False, False, False, False, False,  True, False, False,  True,
+       False, False, False, False, False, False,  True, False, False,
+       False,  True,  True, False,  True]), 'seeds': None}
+=== Sun Apr 12 03:51:17 AM IST 2026 === epoch_7 DONE ===
+=== Sun Apr 12 03:51:18 AM IST 2026 === EVAL epoch_8 START ===
+03:51:22.132 | INFO    (590801, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:51:22.132 | INFO    (590801, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:51:22.132 | INFO    (590801, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:51:22.132 | INFO    (590801, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:51:22.132 | INFO    (590801, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:51:22.132 | INFO    (590801, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:51:22,143][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:51:22,249][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:51:22,317][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:51:22,318][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:51:22,319][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:51:22,429][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:51:23,414][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:51:23,519][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:51:23,612][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:51:23,712][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:51:23,815][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:51:23,910][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:51:24,009][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:51:24,021][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:51:24,033][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 55.8326 seconds
+CEM solve time: 55.8302 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 56.00000000000001, 'episode_successes': array([False, False,  True,  True,  True, False,  True,  True, False,
+        True,  True,  True, False,  True, False,  True,  True,  True,
+        True,  True, False, False,  True, False, False,  True,  True,
+        True,  True,  True, False, False,  True, False,  True, False,
+        True, False, False,  True, False, False,  True,  True, False,
+       False,  True, False,  True, False]), 'seeds': None}
+=== Sun Apr 12 03:53:29 AM IST 2026 === epoch_8 DONE ===
+=== Sun Apr 12 03:53:29 AM IST 2026 === EVAL epoch_9 START ===
+03:53:34.022 | INFO    (593147, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:53:34.022 | INFO    (593147, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:53:34.022 | INFO    (593147, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:53:34.022 | INFO    (593147, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:53:34.022 | INFO    (593147, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:53:34.022 | INFO    (593147, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:53:34,033][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:53:34,130][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:53:34,183][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:53:34,184][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:53:34,185][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:53:34,285][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:53:34,713][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:53:34,719][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:53:34,723][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:53:34,727][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:53:34,730][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:53:34,734][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:53:34,738][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:53:34,738][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:53:34,738][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 55.7497 seconds
+CEM solve time: 55.5813 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 56.00000000000001, 'episode_successes': array([False,  True,  True,  True,  True, False,  True,  True, False,
+       False, False,  True,  True, False,  True,  True,  True,  True,
+        True,  True,  True,  True, False, False,  True,  True,  True,
+       False,  True,  True, False, False,  True, False, False, False,
+       False, False, False, False, False, False,  True,  True, False,
+       False,  True,  True,  True,  True]), 'seeds': None}
+=== Sun Apr 12 03:55:40 AM IST 2026 === epoch_9 DONE ===
+=== Sun Apr 12 03:55:40 AM IST 2026 === EVAL epoch_10 START ===
+03:55:44.479 | INFO    (595521, stable_worldmodel.world) | 🌍🌍🌍 World swm/TwoRoom-v1 initialized 🌍🌍🌍
+03:55:44.479 | INFO    (595521, stable_worldmodel.world) | 🕹️ 🕹️ 🕹️ Action space 🕹️ 🕹️ 🕹️
+03:55:44.479 | INFO    (595521, stable_worldmodel.world) | Box(-1.0, 1.0, (50, 2), float32)
+03:55:44.479 | INFO    (595521, stable_worldmodel.world) | 👁️ 👁️ 👁️ Observation space 👁️ 👁️ 👁️
+03:55:44.479 | INFO    (595521, stable_worldmodel.world) | Box(0.0, 224.0, (50, 10), float32)
+03:55:44.479 | INFO    (595521, stable_worldmodel.world) | ⚗️ ⚗️ ⚗️ Variation space ⚗️ ⚗️ ⚗️
+agent:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+    speed: Box(1.75, 10.5, (1,), float32)
+background:
+    color: Box(0, 255, (3,), uint8)
+door:
+    color: Box(0, 255, (3,), uint8)
+    number: Discrete(3, start=1)
+    position: MultiDiscrete([224 224 224])
+    size: MultiDiscrete([21 21 21], start=[1 1 1])
+rendering:
+    render_target: Discrete(2)
+target:
+    color: Box(0, 255, (3,), uint8)
+    position: Box(14.0, 209.0, (2,), float32)
+    radius: Box(7.0, 14.0, (1,), float32)
+task:
+    min_steps: Discrete(100, start=15)
+wall:
+    axis: Discrete(2)
+    border_color: Box(0, 255, (3,), uint8)
+    color: Box(0, 255, (3,), uint8)
+    thickness: Discrete(35, start=7)
+[2026-04-12 03:55:44,490][root][INFO] - Cached 'action' from LMDB
+[2026-04-12 03:55:44,495][root][INFO] - Cached 'distance_to_target' from LMDB
+[2026-04-12 03:55:44,498][root][INFO] - Cached 'ep_idx' from LMDB
+[2026-04-12 03:55:44,498][root][INFO] - Cached 'ep_len' from LMDB
+[2026-04-12 03:55:44,498][root][INFO] - Cached 'ep_offset' from LMDB
+[2026-04-12 03:55:44,504][root][INFO] - Cached 'id' from LMDB
+[2026-04-12 03:55:44,557][root][INFO] - Cached 'observation' from LMDB
+[2026-04-12 03:55:44,563][root][INFO] - Cached 'pos_agent' from LMDB
+[2026-04-12 03:55:44,567][root][INFO] - Cached 'pos_target' from LMDB
+[2026-04-12 03:55:44,571][root][INFO] - Cached 'proprio' from LMDB
+[2026-04-12 03:55:44,574][root][INFO] - Cached 'render_time' from LMDB
+[2026-04-12 03:55:44,578][root][INFO] - Cached 'reward' from LMDB
+[2026-04-12 03:55:44,582][root][INFO] - Cached 'step_idx' from LMDB
+[2026-04-12 03:55:44,582][root][INFO] - Cached 'terminated' from LMDB
+[2026-04-12 03:55:44,582][root][INFO] - Cached 'truncated' from LMDB
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `reset()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/utils/passive_env_checker.py:130: UserWarning: [33mWARN: The obs returned by the `step()` method was expecting a numpy array, actual type: <class 'torch.Tensor'>[0m
+  logger.warn(
+/home/aarav/wms/le-wm/le-wm/lib/python3.11/site-packages/gymnasium/spaces/box.py:424: UserWarning: [33mWARN: Casting input x to numpy array.[0m
+  gym.logger.warn("Casting input x to numpy array.")
+670809 valid starting points found for evaluation.
+[ 58908  62735  79449  82490  85128  86996 118110 152360 168250 185614
+ 209429 254974 326766 341698 370733 398925 404332 408561 410644 414983
+ 415063 460975 472784 484945 502341 510811 581719 593044 602861 624527
+ 642470 645436 660989 677771 698450 701226 712913 717070 719912 724096
+ 757921 762396 773558 790687 790941 817965 822836 853582 893923 898343]
+CEM solve time: 55.9184 seconds
+CEM solve time: 55.8911 seconds
+Video saved to /home/aarav/wms/le-wm/dataset
+{'success_rate': 36.0, 'episode_successes': array([False, False,  True, False, False, False, False, False, False,
+       False,  True, False, False, False, False, False, False, False,
+        True,  True, False,  True, False, False, False,  True,  True,
+       False,  True,  True, False, False,  True, False,  True, False,
+        True,  True, False, False,  True, False,  True,  True, False,
+       False,  True, False, False,  True]), 'seeds': None}
+=== Sun Apr 12 03:57:49 AM IST 2026 === epoch_10 DONE ===
+SWEEP_COMPLETE
+=== Sun Apr 12 03:57:49 AM IST 2026 === chain script finished
+================================================================

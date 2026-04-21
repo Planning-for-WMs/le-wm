@@ -1,0 +1,1 @@
+Error getting pip freeze: Command '['/home/aarav/wms/le-wm/le-wm/bin/python', '-m', 'pip', 'freeze']' returned non-zero exit status 1.
