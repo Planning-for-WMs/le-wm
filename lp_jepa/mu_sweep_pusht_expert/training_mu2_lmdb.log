@@ -1,0 +1,8 @@
+Error executing job with overrides: ['+loss.rdmreg.kwargs.mu=2.0', 'num_workers=4', 'output_model_name=lewm_lp_p1.0_mu2_pusht_expert_lmdb', 'wandb.config.id=lewm_lp_pusht_expert_mu2_lmdb', 'wandb.config.name=lewm_lp_p1.0_mu2_pusht_expert_lmdb']
+Traceback (most recent call last):
+  File "/home/ubuntu/le-wm-palash/lp_jepa/train_lp_jepa.py", line 84, in run
+    ds_cls = swm.data.LMDBDataset if cfg.get("use_lmdb", False) else swm.data.HDF5Dataset
+AttributeError: module 'stable_worldmodel.data' has no attribute 'LMDBDataset'. Did you mean: 'GoalDataset'?
+
+Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+TRAINING_EXITED_1

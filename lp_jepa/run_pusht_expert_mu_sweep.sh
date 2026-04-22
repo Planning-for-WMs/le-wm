@@ -7,13 +7,15 @@
 
 set -u
 
-REPO=/home/aarav/wms/le-wm
+REPO=/home/ubuntu/le-wm-palash
 SWEEP_DIR="$REPO/lp_jepa/mu_sweep_pusht_expert"
 mkdir -p "$SWEEP_DIR"
 
 cd "$REPO"
 # shellcheck disable=SC1091
-source le-wm/bin/activate
+source /home/ubuntu/miniconda3/etc/profile.d/conda.sh
+conda activate jepa-wms
+export STABLEWM_HOME=/home/ubuntu/le-wm-palash/lewm-pusht
 set -o pipefail
 
 MU_VALUES=(-4 -3 -2 -1 1 2)
@@ -37,7 +39,9 @@ for MU in "${MU_VALUES[@]}"; do
     : > "$TRAIN_LOG"
     python -u lp_jepa/train_lp_jepa.py \
         --config-name=lewm_lp_jepa_pusht_expert \
-        loss.rdmreg.kwargs.mu=$MU \
+        use_lmdb=false \
+        data=pusht_expert \
+        +loss.rdmreg.kwargs.mu=${MU}.0 \
         output_model_name=$MODEL_NAME \
         wandb.config.id=$WANDB_ID \
         wandb.config.name=$MODEL_NAME \

@@ -1,8 +1,5 @@
-Could not override 'loss.rdmreg.kwargs.mu'.
-To append to your config use +loss.rdmreg.kwargs.mu=1
-Key 'mu' is not in struct
-    full_key: loss.rdmreg.kwargs.mu
-    object_type=dict
-
-Set the environment variable HYDRA_FULL_ERROR=1 for a complete stack trace.
+Traceback (most recent call last):
+  File "/home/ubuntu/le-wm-palash/lp_jepa/train_lp_jepa.py", line 30, in <module>
+    import lightning as pl
+ModuleNotFoundError: No module named 'lightning'
 TRAINING_EXITED_1

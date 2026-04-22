@@ -8,7 +8,7 @@ use_lmdb: true
 output_model_name: lewm_lp_p${loss.rdmreg.kwargs.p}_pusht_expert
 subdir: ${hydra:job.id}
 
-num_workers: 6
+num_workers: 10
 train_split: 0.9
 seed: 3072
 img_size: 112
@@ -27,8 +27,8 @@ loader:
   batch_size: 512
   num_workers: ${num_workers}
   persistent_workers: True
-  prefetch_factor: 2
-  pin_memory: False
+  prefetch_factor: 4
+  pin_memory: True
 
 optimizer:
   type: AdamW
